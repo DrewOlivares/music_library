@@ -4,6 +4,7 @@ import { Gallery } from './components/gallery'
 import { SearchBar } from './components/searchBar'
 import { ArtistView } from './components/artistView'
 import { AlbumView } from './components/albumView'
+import { Nav } from './components/nav'
 
 
 function App(){
@@ -24,6 +25,7 @@ function App(){
         <div>
             {message}
             <Router>
+                <Nav />
                 <Routes>
                     <Route path="/" element={
                         <>

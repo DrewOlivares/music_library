@@ -23,13 +23,12 @@ export function GalleryItem({song}){
     
     const detailStyle = {
         'width': '80vw',
-        'height': '20vh',
         'border': '1px solid black',
         'margin': '2px',
         'backgroundImage': `url(${artworkUrl100})`,
         'backgroundRepeat': 'no-repeat',
         'backgroundSize': 'cover',
-        'color': 'black'
+        'color': 'yellow'
     }
 
     const simpleView = () => {
