@@ -1,9 +1,7 @@
 import { useContext, useState } from 'react'
-import { ThemeContext } from '../contexts/themeContext';
 
 export function GalleryItem({song}){
     const [isExpanded, setIsExpanded] = useState(false);
-    let {darkMode, setDarkMode} = useContext(ThemeContext)
 
     const simpleStyle = {
         'width': '25vw',

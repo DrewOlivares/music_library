@@ -1,31 +1,34 @@
-import { useEffect, useState } from 'react'
-import { Gallery } from './components/gallery'
+import { useEffect, useRef, useState } from 'react'
 import { SearchBar } from './components/searchBar'
-import { ThemeContext } from './contexts/themeContext'
+import { Wrapper } from './components/wrapper'
+import { DataContext } from './context/dataContext'
+import { SearchContext } from './context/searchContext'
 
 function App(){
-    let [search, setSearch] = useState('the grateful dead')
     let [message, setMessage] = useState('Search for Music!')
     let [data, setData] = useState([])
-    let [darkMode, setDarkMode] = useState(true)
+    let inputRef = useRef();
+    // useRef(1) returns { current: 1 }
 
-    useEffect(() => {
-        fetch(`https://itunes.apple.com/search?term=${search}`)
+    const fetchData = () => {
+        document.title = inputRef.current.value + ' Music'
+        fetch(`https://itunes.apple.com/search?term=${inputRef.current.value}`)
         .then(response => response.json())
         .then(({resultCount, results}) => {
             setMessage(`Successfully fetched ${resultCount} result(s)!`)
             setData(results)
-            console.log(results)
         })
-    }, [search])
+    }
 
     return (
         <div>
-            <ThemeContext.Provider value={{darkMode, setDarkMode}}>
-                <SearchBar setSearch={setSearch} />
-                {message}
-                <Gallery data={data} />
-            </ThemeContext.Provider>
+            <SearchContext.Provider value={{ref: inputRef, fetchData}}>
+            <SearchBar />
+            </SearchContext.Provider>
+            {message}
+            <DataContext.Provider value={data}>
+            <Wrapper/>
+            </DataContext.Provider>
         </div>
     )
 }
