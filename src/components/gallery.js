@@ -1,6 +1,10 @@
+import { useContext } from 'react'
+import { DataContext } from '../context/dataContext'
 import { GalleryItem } from './galleryItem'
 
-export function Gallery({data}){
+export function Gallery(props){
+
+    const data = useContext(DataContext)
     const songs = data.filter((result) => result.kind === "song")
 
 
@@ -12,4 +16,3 @@ export function Gallery({data}){
         </div>
     )
 }
-

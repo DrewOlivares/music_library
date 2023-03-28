@@ -1,42 +1,53 @@
-import { Fragment, useEffect, useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useEffect, useState, useRef, Fragment } from 'react'
 import { Gallery } from './components/gallery'
 import { SearchBar } from './components/searchBar'
+import { Wrapper } from './components/wrapper'
+import { DataContext } from './context/dataContext'
+import { SearchContext } from './context/searchContext'
 import { ArtistView } from './components/artistView'
 import { AlbumView } from './components/albumView'
 import { Nav } from './components/nav'
 
 
 function App(){
-    let [search, setSearch] = useState('Breaking Benjamin')
     let [message, setMessage] = useState('Search for Music!')
     let [data, setData] = useState([])
+    let inputRef = useRef();
+    // useRef(1) returns { current: 1 }
 
-    useEffect(() => {
-        fetch(`https://itunes.apple.com/search?term=${search}`)
+    const fetchData = () => {
+        document.title = inputRef.current.value + ' Music'
+        fetch(`https://itunes.apple.com/search?term=${inputRef.current.value}`)
         .then(response => response.json())
         .then(({resultCount, results}) => {
             setMessage(`Successfully fetched ${resultCount} result(s)!`)
             setData(results)
         })
-    }, [search])
+    }
 
     return (
         <div>
             {message}
             <Router>
-                <Nav />
-                <Routes>
-                    <Route path="/" element={
-                        <>
-                            <SearchBar setSearch={setSearch} />
-                            <Gallery data={data} />
-                        </>
-                    } />
-                    <Route path="/album/:id" element={<AlbumView/>} />
-                    <Route path="/artist/:id" element={<ArtistView/>} />
-                </Routes>
-            </Router>
+            <Nav />
+
+
+<Routes>
+    <Route path="/" element={
+        <>
+            <SearchContext.Provider value={{ref: inputRef, fetchData}}></SearchContext.Provider>
+                <SearchBar />
+            </SearchContext.Provider>
+            <DataContext.Provider value={data}>
+                <Wrapper/>
+            </DataContext.Provider>
+        </>
+        } />
+            <Route path="/album/:id" element={<AlbumView/>} />
+            <Route path="/artist/:id" element={<ArtistView/>} />
+            </Routes>
+</Router>
+
         </div>
     )
 }

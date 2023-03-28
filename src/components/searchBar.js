@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { SearchContext } from '../context/searchContext'
 
-export function SearchBar({setSearch}) {
-    
-    let [query, setQuery] = useState('')
+export function SearchBar(props) {
+    const {ref, fetchData} = useContext(SearchContext)
 
-    const handleChange = (e) => {
-        setQuery(e.target.value)
-    }
 
 /*  this is to perform the search as we type
     useEffect(()=>{
@@ -16,12 +13,12 @@ export function SearchBar({setSearch}) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setSearch(query)
+        fetchData()
     }
     
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" value={query} onChange={handleChange}/>
+            <input type="text" ref={ref}/>
             <input type="submit" value="search" />
         </form>
     )
