@@ -25,8 +25,9 @@ function App(){
         <Router>
             <div>
                 <SearchBar setSearch={setSearch} />
-                    {message}
-                    <Gallery data={data} />
+                {message}
+                <Gallery data={data} />
+
             </div>
         </Router>
     )
