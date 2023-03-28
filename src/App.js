@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, Fragment } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Gallery } from './components/gallery'
 import { SearchBar } from './components/searchBar'
 import { Wrapper } from './components/wrapper'
@@ -7,6 +7,7 @@ import { SearchContext } from './context/searchContext'
 import { ArtistView } from './components/artistView'
 import { AlbumView } from './components/albumView'
 import { Nav } from './components/nav'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 
 function App(){
@@ -30,23 +31,21 @@ function App(){
             {message}
             <Router>
             <Nav />
-
-
-<Routes>
-    <Route path="/" element={
-        <>
-            <SearchContext.Provider value={{ref: inputRef, fetchData}}></SearchContext.Provider>
-                <SearchBar />
-            </SearchContext.Provider>
-            <DataContext.Provider value={data}>
-                <Wrapper/>
-            </DataContext.Provider>
-        </>
-        } />
-            <Route path="/album/:id" element={<AlbumView/>} />
-            <Route path="/artist/:id" element={<ArtistView/>} />
-            </Routes>
-</Router>
+                <Routes>
+                    <Route path="/" element={
+                    <>
+                        <SearchContext.Provider value={{ref: inputRef, fetchData}}>
+                            <SearchBar />
+                        </SearchContext.Provider>
+                        <DataContext.Provider value={data}>
+                            <Wrapper/>
+                        </DataContext.Provider>
+                    </>
+                    } />
+                        <Route path="/album/:id" element={<AlbumView/>} />
+                        <Route path="/artist/:id" element={<ArtistView/>} />
+                        </Routes>
+            </Router>
 
         </div>
     )
