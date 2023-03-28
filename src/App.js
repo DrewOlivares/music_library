@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Gallery } from './components/gallery'
 import { SearchBar } from './components/searchBar'
@@ -7,7 +7,7 @@ import { AlbumView } from './components/albumView'
 
 
 function App(){
-    let [search, setSearch] = useState('the grateful dead')
+    let [search, setSearch] = useState('Breaking Benjamin')
     let [message, setMessage] = useState('Search for Music!')
     let [data, setData] = useState([])
 
@@ -17,19 +17,25 @@ function App(){
         .then(({resultCount, results}) => {
             setMessage(`Successfully fetched ${resultCount} result(s)!`)
             setData(results)
-            console.log(results)
         })
     }, [search])
 
     return (
-        <Router>
-            <div>
-                <SearchBar setSearch={setSearch} />
-                {message}
-                <Gallery data={data} />
-
-            </div>
-        </Router>
+        <div>
+            {message}
+            <Router>
+                <Routes>
+                    <Route path="/" element={
+                        <>
+                            <SearchBar setSearch={setSearch} />
+                            <Gallery data={data} />
+                        </>
+                    } />
+                    <Route path="/album/:id" element={<AlbumView/>} />
+                    <Route path="/artist/:id" element={<ArtistView/>} />
+                </Routes>
+            </Router>
+        </div>
     )
 }
 
