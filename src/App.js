@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Gallery } from './components/gallery'
 import { SearchBar } from './components/searchBar'
-import { ThemeContext } from './contexts/themeContext'
+import { ArtistView } from './components/artistView'
+import { AlbumView } from './components/albumView'
+
 
 function App(){
     let [search, setSearch] = useState('the grateful dead')
     let [message, setMessage] = useState('Search for Music!')
     let [data, setData] = useState([])
-    let [darkMode, setDarkMode] = useState(true)
 
     useEffect(() => {
         fetch(`https://itunes.apple.com/search?term=${search}`)
@@ -20,13 +22,13 @@ function App(){
     }, [search])
 
     return (
-        <div>
-            <ThemeContext.Provider value={{darkMode, setDarkMode}}>
+        <Router>
+            <div>
                 <SearchBar setSearch={setSearch} />
-                {message}
-                <Gallery data={data} />
-            </ThemeContext.Provider>
-        </div>
+                    {message}
+                    <Gallery data={data} />
+            </div>
+        </Router>
     )
 }
 
